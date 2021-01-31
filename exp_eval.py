@@ -5,22 +5,11 @@ class PostfixFormatException(Exception):
     pass
 
 
-# # return the operand stack of the input_string 
-# # str -> stack
-# def toStack(input_str):
-#     input_array = input_str.split(" ")
-#     stack = Stack(len(input_array))
-#     i = 0
-#     while(i < len(input_array)):
-#         stack.push(input_array[i])
-#         i += 1
-#     return stack
-
 # void
 # process operator to calculate the result
 def process_operator(str, stack):
     try:
-        stack.push(int(str))
+        stack.push(float(str))
     except ValueError:
         if "+-*/**".__contains__(str):
             operate(str, stack)
@@ -32,8 +21,8 @@ def process_operator(str, stack):
 # process a single calculation
 def operate(str, stack):
     try:
-        a = int(stack.pop())
-        b = int(stack.pop())
+        a = float(stack.pop())
+        b = float(stack.pop())
         if str == "+":
             stack.push(b + a)
         elif str == "-":
