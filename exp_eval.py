@@ -17,7 +17,7 @@ class PostfixFormatException(Exception):
 #     return stack
 
 # void
-# process  operator
+# process operator to calculate the result
 def process_operator(str, stack):
     try:
         stack.push(int(str))
@@ -32,19 +32,22 @@ def process_operator(str, stack):
 # process a single calculation
 def operate(str, stack):
     try:
+        a = int(stack.pop())
+        b = int(stack.pop())
         if str == "+":
-            stack.push(stack.pop() + stack.pop())
+            stack.push(b + a)
         elif str == "-":
-            stack.push(stack.pop() - stack.pop())
+            stack.push(b - a)
         elif str == "*":
-            stack.push(stack.pop() * stack.pop())
+            stack.push(b * a)
         elif str == "/":
-            stack.push(stack.pop() / stack.pop())
+            if a == 0:
+                raise ValueError
+            stack.push(b / a)
         else:
-            stack.push(stack.pop() ** stack.pop())
+            stack.push(b ** a)
     except IndexError:
         raise PostfixFormatException("Insufficient operands")
-
 
 
 def postfix_eval(input_str):
@@ -70,12 +73,24 @@ def postfix_eval(input_str):
 
 
 
+
 def prefix_to_postfix(input_str):
     '''Converts a prefix expression to an equivalent postfix expression
     
     Input argument:  a string containing a prefix expression where tokens are 
     space separated.  Tokens are either operators + - * / ** >> << parentheses ( ) or numbers
     Returns a String containing a postfix expression(tokens are space separated)'''
-    pass
-
-
+    input_array = input_str.split(" ")
+    operation_len = len(input_array)
+    stack = Stack(operation_len)
+    i = operation_len
+    while i > 0:
+        i -= 1
+        string = input_array[i]
+        if "+-*/**".__contains__(string):
+            a = str(stack.pop())
+            b = str(stack.pop())
+            stack.push(a + " " + b + " " + string)
+        else:
+            stack.push(string)
+    return stack.pop()
