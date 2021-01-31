@@ -5,16 +5,45 @@ class PostfixFormatException(Exception):
     pass
 
 
-# return the operand stack of the input_string 
-# str -> stack
-def toStack(input_str):
-    input_array = input_str.split(" ")
-    stack = Stack(len(input_array))
-    i = 0
-    while(i < len(input_array)):
-        stack.push(input_array[i])
-        i += 1
-    return stack
+# # return the operand stack of the input_string 
+# # str -> stack
+# def toStack(input_str):
+#     input_array = input_str.split(" ")
+#     stack = Stack(len(input_array))
+#     i = 0
+#     while(i < len(input_array)):
+#         stack.push(input_array[i])
+#         i += 1
+#     return stack
+
+# void
+# process  operator
+def process_operator(str, stack):
+    try:
+        stack.push(int(str))
+    except ValueError:
+        if "+-*/**".__contains__(str):
+            operate(str, stack)
+        else:
+            raise PostfixFormatException("Invalid token")
+
+
+# void
+# process a single calculation
+def operate(str, stack):
+    try:
+        if str == "+":
+            stack.push(stack.pop() + stack.pop())
+        elif str == "-":
+            stack.push(stack.pop() - stack.pop())
+        elif str == "*":
+            stack.push(stack.pop() * stack.pop())
+        elif str == "/":
+            stack.push(stack.pop() / stack.pop())
+        else:
+            stack.push(stack.pop() ** stack.pop())
+    except IndexError:
+        raise PostfixFormatException("Insufficient operands")
 
 
 
@@ -26,11 +55,18 @@ def postfix_eval(input_str):
     Returns the result of the expression evaluation. 
     Raises an PostfixFormatException if the input is not well-formed
     DO NOT USE PYTHON'S EVAL FUNCTION!!!'''
-
-    
-
-    
-    
+    input_array = input_str.split(" ")
+    operation_len = len(input_array)
+    stack = Stack(operation_len)
+    i = 0
+    while(i < operation_len):
+        operation = input_array[i]
+        process_operator(operation, stack)
+        i += 1
+    if stack.item_num == 1:
+        return stack.pop()
+    else:
+        raise PostfixFormatException("Too many operands")
 
 
 
