@@ -47,7 +47,7 @@ class test_expressions(unittest.TestCase):
             self.assertEqual(str(e), "Too many operands")
 
     def test_prefix_convert(self):
-        self.assertEqual(prefix_to_postfix("* - 3 / 2 1 - / 4 5 6"), "3 2 1 / - 4 5 / 6 - *")
+        self.assertEqual(prefix_to_postfix("+ 3 / * 4 2 >> - 1 5 << 2 3"), "3 4 2 * 1 5 - 2 3 << >> / +")
 
 if __name__ == "__main__":
     unittest.main()

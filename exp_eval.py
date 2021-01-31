@@ -76,7 +76,7 @@ def prefix_to_postfix(input_str):
     while i > 0:
         i -= 1
         string = input_array[i]
-        if "+-*/**".__contains__(string):
+        if "+-*/**<<>>".__contains__(string):
             a = str(stack.pop())
             b = str(stack.pop())
             stack.push(a + " " + b + " " + string)
